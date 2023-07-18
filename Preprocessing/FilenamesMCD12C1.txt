@@ -1,0 +1,7 @@
+https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/MCD12C1.061/MCD12C1.A2021001.061.2022217040006/MCD12C1.A2021001.061.2022217040006.hdf
+https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/MCD12C1.061/MCD12C1.A2020001.061.2022172062638/MCD12C1.A2020001.061.2022172062638.hdf
+https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/MCD12C1.061/MCD12C1.A2019001.061.2022170020638/MCD12C1.A2019001.061.2022170020638.hdf
+https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/MCD12C1.061/MCD12C1.A2018001.061.2022169131657/MCD12C1.A2018001.061.2022169131657.hdf
+https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/MCD12C1.061/MCD12C1.A2017001.061.2022168170603/MCD12C1.A2017001.061.2022168170603.hdf
+https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/MCD12C1.061/MCD12C1.A2016001.061.2022168010533/MCD12C1.A2016001.061.2022168010533.hdf
+https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/MCD12C1.061/MCD12C1.A2015001.061.2022166123617/MCD12C1.A2015001.061.2022166123617.hdf
