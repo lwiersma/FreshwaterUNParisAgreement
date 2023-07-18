@@ -84,7 +84,7 @@ rm -f $TemporaryLocation"/MCD12C1/*"
 
 for file in ../Geodata/*.tif; do
   filename=$(basename "$file" .tif)
-  gdalwarp -ot Float32 -ts 7200 3000 -te -180 -60 180 90 -of GTiff "$file" "../Geodata/ReRastered$filename.tif"
+  gdalwarp -ot Float32 -t_srs EPSG:4169 -ts 7200 3000 -te -180 -60 180 90 -of GTiff "$file" "../Geodata/ReRastered$filename.tif"
   rm $file
 done
 
