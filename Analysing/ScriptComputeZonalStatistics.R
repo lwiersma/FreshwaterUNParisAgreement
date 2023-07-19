@@ -25,19 +25,24 @@ ClassesUndiff = mask(raster("../Geodata/ReRasteredMCD12C1_2021_class.tif"),
                      maskvalue = TRUE,
                      updatevalue = NA)
 
+ReClasses = matrix(c(7, 6, 9, 8), ncol = 2, byrow = TRUE)
+
+ClassesUndiffReClassed = reclassify(ClassesUndiff, 
+                                    ReClasses)
+
 HydroVariablesGLDASNoah = c("Rainf_tavg",
-                        "ECanop_tavg",
-                        "ESoil_tavg",
-                        "TVeg_tavg",
-                        "Qs_acc",
-                        "Qsb_acc")
+                            "ECanop_tavg",
+                            "ESoil_tavg",
+                            "TVeg_tavg",
+                            "Qs_acc",
+                            "Qsb_acc")
 
 HydroVariablesGLDASCLSM = c("GWS_tavg",
                             "SoilMoist_P_tavg",
                             "CanopInt_tavg",
                             "SWE_tavg")
 
-MatrixMedian = cbind()
+MatrixMean = cbind()
 
 MatrixQuantile1 = cbind()
 
@@ -51,16 +56,20 @@ for (Variable in HydroVariablesGLDASNoah) {
   Filename <- paste("Zonal", 
                     Variable, 
                     sep="")
-  ZonalStatsVariable = zonal(raster(GeodataLoc),
-                             ClassesUndiff,
-                             fun='quantile',
+  ZonalStatsMean = zonal(raster(GeodataLoc),
+                             ClassesUndiffReClassed,
+                             fun='mean',
                              na.rm=TRUE)
-  MatrixMedian = cbind(MatrixMedian,
-                       ZonalStatsVariable[,4])
+  MatrixMean = cbind(MatrixMean,
+                       ZonalStatsMean[,2])
+  ZonalStatsQuantiles = zonal(raster(GeodataLoc),
+                         ClassesUndiffReClassed,
+                         fun='quantile',
+                         na.rm = TRUE)
   MatrixQuantile1 = cbind(MatrixQuantile1,
-                          ZonalStatsVariable[,3])
+                          ZonalStatsQuantiles[,3])
   MatrixQuantile3 = cbind(MatrixQuantile3,
-                          ZonalStatsVariable[,5])
+                          ZonalStatsQuantiles[,5])
 }
 
 for (Variable in HydroVariablesGLDASCLSM) {
@@ -71,42 +80,41 @@ for (Variable in HydroVariablesGLDASCLSM) {
   Filename <- paste("Zonal", 
                     Variable, 
                     sep="")
-  ZonalStatsVariable = zonal(raster(GeodataLoc),
-                             ClassesUndiff,
-                             fun='quantile',
-                             na.rm=TRUE)
-  MatrixMedian = cbind(MatrixMedian,
-                       ZonalStatsVariable[,4])
+  ZonalStatsMean = zonal(raster(GeodataLoc),
+                         ClassesUndiffReClassed,
+                         fun='mean',
+                         na.rm=TRUE)
+  MatrixMean = cbind(MatrixMean,
+                     ZonalStatsMean[,2])
+  ZonalStatsQuantiles = zonal(raster(GeodataLoc),
+                              ClassesUndiffReClassed,
+                              fun='quantile',
+                              na.rm = TRUE)
   MatrixQuantile1 = cbind(MatrixQuantile1,
-                          ZonalStatsVariable[,3])
+                          ZonalStatsQuantiles[,3])
   MatrixQuantile3 = cbind(MatrixQuantile3,
-                          ZonalStatsVariable[,5])
+                          ZonalStatsQuantiles[,5])
 }
 
-RescaledMatrixQuantile3 <- apply(MatrixQuantile3[-c(1, 14, 16), ], 
-                                  2, 
-                                  rescale_function)
-RescaledMatrixMedian = MatrixMedian[-c(1, 14, 16), ] * (RescaledMatrixQuantile3 / MatrixQuantile3[-c(1, 14, 16), ])
-RescaledMatrixQuantile1 = MatrixQuantile1[-c(1, 14, 16), ] * (RescaledMatrixQuantile3 / MatrixQuantile3[-c(1, 14, 16), ])
+RescaledMatrixQuantile3 <- apply(MatrixQuantile3[-c(1, 12, 14), ], 
+                                 2, 
+                                 rescale_function)
+RescaledMatrixMean = MatrixMean[-c(1, 12, 14), ] * (RescaledMatrixQuantile3 / MatrixQuantile3[-c(1, 12, 14), ])
+RescaledMatrixQuantile1 = MatrixQuantile1[-c(1, 12, 14), ] * (RescaledMatrixQuantile3 / MatrixQuantile3[-c(1, 12, 14), ])
 
-DataframeMedian = as.data.frame(apply(RescaledMatrixMedian, 2, function(x) ifelse(is.nan(x), 0.0000, x)))
+DataframeMean = as.data.frame(apply(RescaledMatrixMean, 2, function(x) ifelse(is.nan(x), 0.0000, x)))
 DataframeQuantile1 = as.data.frame(apply(RescaledMatrixQuantile1, 2, function(x) ifelse(is.nan(x), 0.0000, x)))
 DataframeQuantile3 = as.data.frame(apply(RescaledMatrixQuantile3, 2, function(x) ifelse(is.nan(x), 0.0000, x)))
 
-rownames(DataframeMedian) = c(#"Water bodies",
-  "Evergreen Needleleaf Forests",
-  "Evergreen Broadleaf Forests",
-  "Deciduous Needleleaf Forests",
-  "Deciduous Broadleaf Forests",
-  "Mixed Forests",
-  "Closed Shrublands",
-  "Open Shrublands",
-  "Woody Savannas",
-  "Savannas",
-  "Grasslands",
-  "Permanent Wetlands",
-  "Croplands",
-  #"Urban and Built-up Lands",
-  "Cropland/Natural Vegetation Mosaics",
-  #"Permanent Snow and Ice",
-  "Non-Vegetated Lands")
+rownames(DataframeMean) = c("Evergreen needleleaf forests",
+                              "Evergreen broadleaf forests",
+                              "Deciduous needleleaf forests",
+                              "Deciduous broadleaf forests",
+                              "Mixed forests",
+                              "Shrublands",
+                              "Savannas",
+                              "Grasslands",
+                              "Permanent wetlands",
+                              "Croplands",
+                              "Cropland/Natural vegetation mosaics",
+                              "Nonvegetated land")
