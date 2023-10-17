@@ -104,32 +104,10 @@ Annotations <- list(list(label = "Precipitation (Pr)", x = 1, angle = 72),
                     list(label = "Snow water \nequivalent (Sn", x = 10, angle = -72)
 )
 
-colnames(DataframeMean) = c("Pr",
-                              "Ei",
-                              "Es",
-                              "Tr",
-                              "Rs",
-                              "Rg",
-                              "Gw",
-                              "Sm",
-                              "Cw",
-                              "Sn")
-
 LegendDataframe = data.frame(Column = colnames(DataframeMean),
                              Value=105)
 LegendDataframe$Column = factor(LegendDataframe$Column, 
                                 levels = colnames(DataframeMean))
-
-Fills = c("#4ec973", 
-          "#9ece5f", 
-          "#9ece5f", 
-          "#9ece5f", 
-          "#004ca3",
-          "#004ca3",
-          "#1fc6ad", 
-          "#1fc6ad", 
-          "#1fc6ad", 
-          "#1fc6ad")
 
 Legend = ggplot(LegendDataframe, 
                 aes(x = Column,
@@ -187,6 +165,16 @@ for (i in 1:11) {
     coord_radar() +
     ggtitle(PlotDataframe$Class[1]) +
     FingerprintTheme
+  
+  ggsave(paste("Fingerprint ",
+               PlotDataframe$Class[1],
+               ".png",
+               sep = ""),
+         plot = Plot,
+         width = 180, 
+         height = 110,
+         units = "mm",
+         dpi = 450)
   
   Position = i + 1
   

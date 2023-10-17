@@ -102,19 +102,36 @@ RescaledMatrixQuantile3 <- apply(MatrixQuantile3[-c(1, 12, 14), ],
 RescaledMatrixMean = MatrixMean[-c(1, 12, 14), ] * (RescaledMatrixQuantile3 / MatrixQuantile3[-c(1, 12, 14), ])
 RescaledMatrixQuantile1 = MatrixQuantile1[-c(1, 12, 14), ] * (RescaledMatrixQuantile3 / MatrixQuantile3[-c(1, 12, 14), ])
 
-DataframeMean = as.data.frame(apply(RescaledMatrixMean, 2, function(x) ifelse(is.nan(x), 0.0000, x)))
-DataframeQuantile1 = as.data.frame(apply(RescaledMatrixQuantile1, 2, function(x) ifelse(is.nan(x), 0.0000, x)))
-DataframeQuantile3 = as.data.frame(apply(RescaledMatrixQuantile3, 2, function(x) ifelse(is.nan(x), 0.0000, x)))
+DataframeMean = as.data.frame(apply(RescaledMatrixMean, 2, function(x) ifelse(is.nan(x), 
+                                                                              0.0000, 
+                                                                              x)))
+DataframeQuantile1 = as.data.frame(apply(RescaledMatrixQuantile1, 2, function(x) ifelse(is.nan(x), 
+                                                                                        0.0000, 
+                                                                                        x)))
+DataframeQuantile3 = as.data.frame(apply(RescaledMatrixQuantile3, 2, function(x) ifelse(is.nan(x), 
+                                                                                        0.0000, 
+                                                                                        x)))
 
 rownames(DataframeMean) = c("Evergreen needleleaf forests",
-                              "Evergreen broadleaf forests",
-                              "Deciduous needleleaf forests",
-                              "Deciduous broadleaf forests",
-                              "Mixed forests",
-                              "Shrublands",
-                              "Savannas",
-                              "Grasslands",
-                              "Permanent wetlands",
-                              "Croplands",
-                              "Cropland/Natural vegetation mosaics",
-                              "Nonvegetated land")
+                            "Evergreen broadleaf forests",
+                            "Deciduous needleleaf forests",
+                            "Deciduous broadleaf forests",
+                            "Mixed forests",
+                            "Shrublands",
+                            "Savannas",
+                            "Grasslands",
+                            "Permanent wetlands",
+                            "Croplands",
+                            "Cropland/Natural vegetation mosaics",
+                            "Nonvegetated land")
+
+colnames(DataframeMean) = c("Pr",
+                            "Ei",
+                            "Es",
+                            "Tr",
+                            "Rs",
+                            "Rg",
+                            "Gw",
+                            "Sm",
+                            "Cw",
+                            "Sn")
